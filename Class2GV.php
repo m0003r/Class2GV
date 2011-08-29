@@ -19,13 +19,14 @@ class Class2GV {
         $this->showVariables = true;
     }
 
-    public function convert($phpClassFile)
+    public function convert($phpClassFile, $tool = 'dot')
     {
         if (!file_exists($phpClassFile))
             throw new Exception("File not found");
 
         $this->fileName = $phpClassFile;
         $this->moduleName = basename($this->fileName, ".php");
+		$this->tool = $tool;
 
         $this->parseClass();
         $this->makeGraphData();
@@ -220,7 +221,7 @@ class Class2GV {
         $this->makeGV();
         file_put_contents($graphFile, $this->gv);
 
-        $command = $this->toolPath . " -Tsvg -o$svgFile $graphFile";
+        $command = '"' . $this->toolPath . $this->tool . "\" -Tsvg -o$svgFile $graphFile";
         header("X-Render-Command: $command");
         system($command);
 
