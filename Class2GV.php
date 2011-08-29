@@ -108,7 +108,11 @@ class Class2GV {
             {
                 $findCallStatus = 0;
                 if ($token == "(")
+				{
                     $this->methodsList[$methodName][] = $methodOrVariable;
+					if (!isset($this->methodsType[$methodOrVariable]))
+						$this->methodsType[$methodOrVariable] = "inherited";
+				}
                 else
                 {
                     if (!isset($this->variableList[$methodOrVariable]))
@@ -165,7 +169,7 @@ class Class2GV {
 
     private function setupNodeShapes()
     {
-        $privateMethods = $protectedMethods = $publicMethods = array();
+        $privateMethods = $protectedMethods = $publicMethods = $inheritedMethods = array();
         foreach ($this->methodsType as $methodName => $methodType)
         {
             $arrayName = $methodType . "Methods";
@@ -181,6 +185,9 @@ class Class2GV {
 
         if (!empty($publicMethods))
             $this->gv .= "  node [shape=box,style=filled,color=lightgreen]; " . implode("; ", $publicMethods) . ";\n";
+			
+        if (!empty($inheritedMethods))
+            $this->gv .= "  node [shape=box,style=filled,color=lightblue]; " . implode("; ", $inheritedMethods) . ";\n";
 
 		if ($this->showVariables)
 			if (!empty($this->variableList))
