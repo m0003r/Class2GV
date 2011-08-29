@@ -182,8 +182,9 @@ class Class2GV {
         if (!empty($publicMethods))
             $this->gv .= "  node [shape=box,style=filled,color=lightgreen]; " . implode("; ", $publicMethods) . ";\n";
 
-        if (!empty($this->variableList))
-            $this->gv .= "  node [shape=box,style=filled,color=lightgrey,fontsize=9]; " . implode("; ", array_keys($this->variableList)) . ";\n";
+		if ($this->showVariables)
+			if (!empty($this->variableList))
+				$this->gv .= "  node [shape=box,style=filled,color=lightgrey,fontsize=9]; " . implode("; ", array_keys($this->variableList)) . ";\n";
     }
 
     private function formatNodes()
